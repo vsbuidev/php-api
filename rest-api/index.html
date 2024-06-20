@@ -4,30 +4,103 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CRUD API Testing</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #f4f4f4;
+      }
+
+      h1,
+      h2 {
+        color: #333;
+      }
+
+      form {
+        margin-bottom: 20px;
+        padding: 20px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+      }
+
+      .read-form {
+        margin-bottom: 20px;
+        padding: 20px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+      }
+
+      input[type="text"],
+      input[type="email"],
+      input[type="number"] {
+        width: calc(100% - 22px);
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+      }
+
+      button {
+        padding: 10px 15px;
+        color: #fff;
+        background-color: #007bff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #0056b3;
+      }
+
+      #users {
+        padding: 20px;
+        margin: 10px 0;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+      }
+
+      .user-item {
+        margin-bottom: 10px;
+        padding: 10px;
+        background-color: #f9f9f9;
+        border: 1px solid #eee;
+        border-radius: 5px;
+      }
+    </style>
     <script>
       async function createUser() {
         const name = document.getElementById("name").value;
         const email = document.getElementById("email").value;
 
-        const response = await fetch("http://crud-api.test/api/create.php", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ name, email }),
-        });
+        const response = await fetch(
+          "http://crud-api.test/rest-api/api/create.php",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ name, email }),
+          }
+        );
 
         const result = await response.json();
         alert(result.message);
       }
 
       async function readUsers() {
-        const response = await fetch("http://crud-api.test/api/read.php");
+        const response = await fetch(
+          "http://crud-api.test/rest-api/api/read.php"
+        );
         const result = await response.json();
 
         let output = "<h2>Users:</h2>";
         result.records.forEach((user) => {
-          output += `<p>ID: ${user.id} - Name: ${user.name} - Email: ${user.email}</p>`;
+          output += `<div class="user-item">ID: ${user.id} - Name: ${user.name} - Email: ${user.email}</div>`;
         });
 
         document.getElementById("users").innerHTML = output;
@@ -38,13 +111,16 @@
         const name = document.getElementById("update-name").value;
         const email = document.getElementById("update-email").value;
 
-        const response = await fetch("http://crud-api.test/api/update.php", {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ id, name, email }),
-        });
+        const response = await fetch(
+          "http://crud-api.test/rest-api/api/update.php",
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ id, name, email }),
+          }
+        );
 
         const result = await response.json();
         alert(result.message);
@@ -53,13 +129,16 @@
       async function deleteUser() {
         const id = document.getElementById("delete-id").value;
 
-        const response = await fetch("http://crud-api.test/api/delete.php", {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ id }),
-        });
+        const response = await fetch(
+          "http://crud-api.test/rest-api/api/delete.php",
+          {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ id }),
+          }
+        );
 
         const result = await response.json();
         alert(result.message);
@@ -69,23 +148,31 @@
   <body>
     <h1>CRUD API Testing</h1>
 
-    <h2>Create User</h2>
-    <input type="text" id="name" placeholder="Name" required />
-    <input type="email" id="email" placeholder="Email" required />
-    <button onclick="createUser()">Create</button>
+    <form>
+      <h2>Create User</h2>
+      <input type="text" id="name" placeholder="Name" required />
+      <input type="email" id="email" placeholder="Email" required />
+      <button type="button" onclick="createUser()">Create</button>
+    </form>
 
-    <h2>Read Users</h2>
-    <button onclick="readUsers()">Read</button>
-    <div id="users"></div>
+    <form>
+      <h2>Update User</h2>
+      <input type="number" id="update-id" placeholder="User ID" required />
+      <input type="text" id="update-name" placeholder="Name" />
+      <input type="email" id="update-email" placeholder="Email" />
+      <button type="button" onclick="updateUser()">Update</button>
+    </form>
 
-    <h2>Update User</h2>
-    <input type="number" id="update-id" placeholder="User ID" required />
-    <input type="text" id="update-name" placeholder="Name" />
-    <input type="email" id="update-email" placeholder="Email" />
-    <button onclick="updateUser()">Update</button>
+    <form>
+      <h2>Delete User</h2>
+      <input type="number" id="delete-id" placeholder="User ID" required />
+      <button type="button" onclick="deleteUser()">Delete</button>
+    </form>
 
-    <h2>Delete User</h2>
-    <input type="number" id="delete-id" placeholder="User ID" required />
-    <button onclick="deleteUser()">Delete</button>
+    <div class="read-form">
+      <h2>Read Users</h2>
+      <button onclick="readUsers()">Read</button>
+      <div id="users"></div>
+    </div>
   </body>
 </html>
