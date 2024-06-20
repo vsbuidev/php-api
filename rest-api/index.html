@@ -17,6 +17,10 @@
         color: #333;
       }
 
+      span {
+        font-size: medium;
+      }
+
       form {
         margin-bottom: 20px;
         padding: 20px;
@@ -90,6 +94,7 @@
 
         const result = await response.json();
         alert(result.message);
+        location.reload();
       }
 
       async function readUsers() {
@@ -124,6 +129,7 @@
 
         const result = await response.json();
         alert(result.message);
+        location.reload();
       }
 
       async function deleteUser() {
@@ -142,6 +148,7 @@
 
         const result = await response.json();
         alert(result.message);
+        location.reload();
       }
     </script>
   </head>
@@ -156,7 +163,10 @@
     </form>
 
     <form>
-      <h2>Update User</h2>
+      <h2>
+        Update user
+        <span>(by ID)</span>
+      </h2>
       <input type="number" id="update-id" placeholder="User ID" required />
       <input type="text" id="update-name" placeholder="Name" />
       <input type="email" id="update-email" placeholder="Email" />
@@ -164,7 +174,10 @@
     </form>
 
     <form>
-      <h2>Delete User</h2>
+      <h2>
+        Delete user
+        <span>(by ID)</span>
+      </h2>
       <input type="number" id="delete-id" placeholder="User ID" required />
       <button type="button" onclick="deleteUser()">Delete</button>
     </form>
