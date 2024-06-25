@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="SoapApi"
+    targetNamespace="http://www.example.com/soap_api"
+    xmlns="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:tns="http://www.example.com/soap_api"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+    <message name="getItemRequest">
+        <part name="id" type="xsd:int"/>
+    </message>
+    <message name="getItemResponse">
+        <part name="name" type="xsd:string"/>
+        <part name="description" type="xsd:string"/>
+    </message>
+
+    <message name="createItemRequest">
+        <part name="name" type="xsd:string"/>
+        <part name="description" type="xsd:string"/>
+    </message>
+    <message name="createItemResponse">
+        <part name="result" type="xsd:string"/>
+    </message>
+
+    <message name="updateItemRequest">
+        <part name="id" type="xsd:int"/>
+        <part name="name" type="xsd:string"/>
+        <part name="description" type="xsd:string"/>
+    </message>
+    <message name="updateItemResponse">
+        <part name="result" type="xsd:string"/>
+    </message>
+
+    <message name="deleteItemRequest">
+        <part name="id" type="xsd:int"/>
+    </message>
+    <message name="deleteItemResponse">
+        <part name="result" type="xsd:string"/>
+    </message>
+
+    <portType name="SoapApiPortType">
+        <operation name="getItem">
+            <input message="tns:getItemRequest"/>
+            <output message="tns:getItemResponse"/>
+        </operation>
+        <operation name="createItem">
+            <input message="tns:createItemRequest"/>
+            <output message="tns:createItemResponse"/>
+        </operation>
+        <operation name="updateItem">
+            <input message="tns:updateItemRequest"/>
+            <output message="tns:updateItemResponse"/>
+        </operation>
+        <operation name="deleteItem">
+            <input message="tns:deleteItemRequest"/>
+            <output message="tns:deleteItemResponse"/>
+        </operation>
+    </portType>
+
+    <binding name="SoapApiBinding" type="tns:SoapApiPortType">
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="getItem">
+            <soap:operation soapAction="getItem"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="createItem">
+            <soap:operation soapAction="createItem"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="updateItem">
+            <soap:operation soapAction="updateItem"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="deleteItem">
+            <soap:operation soapAction="deleteItem"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+
+    <service name="SoapApiService">
+        <port name="SoapApiPort" binding="tns:SoapApiBinding">
+            <soap:address location="http://crud-api.test/soap-api/server.php"/>
+        </port>
+    </service>
+</definitions>
