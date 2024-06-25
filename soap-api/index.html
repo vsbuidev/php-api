@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SOAP API Test</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>SOAP API Test</h1>
+      <form id="apiForm">
+        <select id="operation">
+          <option value="getItem">Get Item</option>
+          <option value="createItem">Create Item</option>
+          <option value="updateItem">Update Item</option>
+          <option value="deleteItem">Delete Item</option>
+        </select>
+        <input
+          type="number"
+          id="id"
+          placeholder="ID (for get, update, delete)"
+        />
+        <input type="text" id="name" placeholder="Name (for create, update)" />
+        <textarea
+          id="description"
+          placeholder="Description (for create, update)"
+        ></textarea>
+        <button type="button" onclick="callApi()">Submit</button>
+      </form>
+      <div id="response"></div>
+    </div>
+    <script>
+      function callApi() {
+        const operation = document.getElementById("operation").value;
+        const id = document.getElementById("id").value;
+        const name = document.getElementById("name").value;
+        const description = document.getElementById("description").value;
+
+        let xml = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:SoapApi">
+                           <soapenv:Header/>
+                           <soapenv:Body>`;
+
+        if (operation === "getItem") {
+          xml += `<urn:getItem><id>${id}</id></urn:getItem>`;
+        } else if (operation === "createItem") {
+          xml += `<urn:createItem><name>${name}</name><description>${description}</description></urn:createItem>`;
+        } else if (operation === "updateItem") {
+          xml += `<urn:updateItem><id>${id}</id><name>${name}</name><description>${description}</description></urn:updateItem>`;
+        } else if (operation === "deleteItem") {
+          xml += `<urn:deleteItem><id>${id}</id></urn:deleteItem>`;
+        }
+
+        xml += `</soapenv:Body></soapenv:Envelope>`;
+
+        fetch("http://crud-api.test/soap-api/server.php", {
+          method: "POST",
+          headers: { "Content-Type": "text/xml" },
+          body: xml,
+        })
+          .then((response) => response.text())
+          .then((data) => {
+            alert(data);
+          });
+      }
+    </script>
+  </body>
+</html>
