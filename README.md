@@ -1,4 +1,4 @@
-# Restful API in PHP (CRUD)
+# Restful API in PHP (Basic CRUD)
 
 ## Overview
 
